@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Wrench, HardHat, Wifi, Home, Truck, ShoppingCart } from "lucide-react";
+import { Wrench, HardHat, Wifi, Home, Truck, ShoppingCart, Hammer, CheckCircle2 } from "lucide-react";
 
 const services = [
   {
@@ -33,6 +33,24 @@ const services = [
     icon: ShoppingCart,
     title: "Procurement",
     description: "Our procurement team are experienced in managing and performing procurement activities for diverse projects and contracts while expertly sourcing for anything our clients require – anywhere – from highly trusted sources."
+  },
+  {
+    icon: Hammer,
+    title: "Construction & Trade Services",
+    description: "We provide comprehensive building, construction, renovation and maintenance services across residential, commercial and industrial projects. Our trade capabilities include:",
+    list: [
+      "Painting and decorating works",
+      "Carpentry and joinery",
+      "Joinery installation and finishing",
+      "Bricklaying and blockwork",
+      "Wall and floor tiling",
+      "Glazing and glass installation",
+      "Plumbing and associated building services",
+      "Mechanical fitting and installation",
+      "Building repairs and maintenance",
+      "General construction and finishing works"
+    ],
+    footer: "Projects are delivered by suitably skilled trades personnel in accordance with specifications, building standards and safety requirements."
   }
 ];
 
@@ -78,9 +96,26 @@ export function Services() {
                   {service.title}
                 </h3>
                 
-                <p className="text-brand-dark/70 leading-relaxed group-hover:text-white/80 transition-colors duration-300 flex-1">
+                <p className="text-brand-dark/70 leading-relaxed group-hover:text-white/80 transition-colors duration-300">
                   {service.description}
                 </p>
+
+                {service.list && (
+                  <ul className="mt-4 space-y-2 text-sm text-brand-dark/70 group-hover:text-white/80 transition-colors duration-300">
+                    {service.list.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <CheckCircle2 size={16} className="mt-0.5 text-brand-accent shrink-0 group-hover:text-white transition-colors duration-300" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {service.footer && (
+                  <p className="mt-4 text-xs italic text-brand-dark/60 group-hover:text-white/70 transition-colors duration-300">
+                    {service.footer}
+                  </p>
+                )}
               </div>
             </motion.div>
           ))}
