@@ -1,0 +1,170 @@
+"use client";
+
+import { useState } from "react";
+import { ChevronDown, HelpCircle, Layers } from "lucide-react";
+export interface FaqItem {
+  id: number;
+  category: "Construction" | "Engineering" | "IT & Telecom" | "Procurement";
+  question: string;
+  answer: string;
+}
+
+export type CategoryType = "All" | "Construction" | "Engineering" | "IT & Telecom" | "Procurement";
+const categories: CategoryType[] = ["All", "Construction", "Engineering", "IT & Telecom", "Procurement"];
+const faqsData: FaqItem[] = [
+  {
+    id: 1,
+    category: "Construction",
+    question: "What types of construction projects does Arif Investment execute?",
+    answer: "We handle turnkey residential estates, commercial office towers, industrial facilities, road paving, and public infrastructure rehabilitation. All projects adhere strictly to Nigerian and international building codes with complete structural integrity certification."
+  },
+  {
+    id: 2,
+    category: "Construction",
+    question: "Do you supply heavy construction machinery for hire or site operations?",
+    answer: "Yes, our equipment fleet includes hydraulic excavators, backhoes, motor graders, bulldozers, and dump trucks. All machinery is delivered fully serviced with certified, safety-trained heavy equipment operators."
+  },
+  {
+    id: 3,
+    category: "Engineering",
+    question: "What contracting and delivery models do you support for civil works?",
+    answer: "We accommodate diverse contract frameworks including Conception & Finance, Design-Build-Operate-Transfer (BOT), Public-Private Partnerships (PPP), and traditional Engineering, Procurement & Construction (EPC) turnkey models."
+  },
+  {
+    id: 4,
+    category: "Engineering",
+    question: "How is structural quality and safety monitored during construction?",
+    answer: "Our COREN-registered civil and structural engineers deploy a multi-stage QA/QC inspection protocol. This covers soil bearing capacity tests, concrete core compression tests, and continuous on-site HSE risk compliance."
+  },
+  {
+    id: 5,
+    category: "IT & Telecom",
+    question: "What telecommunication and networking infrastructure services do you offer?",
+    answer: "We deliver turnkey enterprise connectivity solutions including structured fiber optic trunk installation, wireless RF link deployment, drive test site optimization, and seamless network traffic migration."
+  },
+  {
+    id: 6,
+    category: "IT & Telecom",
+    question: "Can Arif Investment handle enterprise data center fit-outs and IT procurement?",
+    answer: "Yes, we design and equip enterprise server rooms with redundant power systems, precision environmental cooling, structured rack cabling, and OEM hardware procurement backed by enterprise SLAs."
+  },
+  {
+    id: 7,
+    category: "Procurement",
+    question: "How does Arif Investment guarantee procurement reliability and timeline compliance?",
+    answer: "Our procurement division maintains verified partnerships with global manufacturers and domestic suppliers. We handle end-to-end supply chain logistics, customs clearance, and warehouse management to eliminate project bottlenecks."
+  },
+  {
+    id: 8,
+    category: "Procurement",
+    question: "Can clients request specialized or custom-ordered industrial materials?",
+    answer: "Absolutely. We specialize in sourcing non-standard structural steel grades, high-capacity transformer units, specialized piping, and heavy industrial plant spare parts on custom delivery schedules."
+  }
+];
+export function FaqAccordion() {
+
+  const [openId, setOpenId] = useState<number | null>(null);
+
+  const toggleFaq = (id: number) => {
+    setOpenId((prevId) => (prevId === id ? null : id));
+  };
+
+
+
+const [activeCategory, setActiveCategory] = useState<CategoryType>("All");
+
+  const handleCategoryChange = (category: CategoryType) => {
+    setActiveCategory(category);
+    setOpenId(null);
+  };
+
+  const filteredFaqs =
+    activeCategory === "All"
+      ? faqsData
+      : faqsData.filter((faq) => faq.category === activeCategory);
+
+
+
+
+
+  return (
+    <section id="faq" className="py-24 bg-brand-gray/40 border-t border-gray-200">
+      <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-semibold uppercase tracking-wider mb-3">
+            <HelpCircle size={14} />
+            <span>Got Questions?</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-primary tracking-tight mb-4">Frequently Asked Questions</h2>
+          <div className="w-16 h-1 bg-brand-accent rounded-full mx-auto mb-4"></div>
+          <p className="text-brand-dark/70 text-base md:text-lg">
+            Find quick answers about our engineering, construction, IT, and procurement services.
+          </p>
+        </div>
+
+        {/* Category Filter Tabs Placement Area */}
+
+     {/* Category Filter Tabs */}
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-10">
+          {categories.map((category) => {
+            const isActive = activeCategory === category;
+            const count =
+              category === "All"
+                ? faqsData.length
+                : faqsData.filter((f) => f.category === category).length;
+
+            return (
+              <button
+                key={category}
+                type="button"
+                onClick={() => handleCategoryChange(category)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-brand-primary text-brand-accent shadow-md scale-105"
+                    : "bg-white text-brand-dark/70 hover:bg-gray-100 hover:text-brand-primary border border-gray-200"
+                }`}
+              >
+                <span>{category}</span>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                    isActive
+                      ? "bg-brand-secondary text-brand-accent"
+                      : "bg-gray-100 text-gray-500"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+
+
+
+        {/* Accordion Cards Container */}
+        <div className="space-y-4">
+          {filteredFaqs.map((faq) => {
+            const isOpen = Array.isArray(openId) ? openId.includes(faq.id) : openId === faq.id;
+            return (
+              <div key={faq.id} className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${isOpen ? "border-brand-primary/40 shadow-md ring-1 ring-brand-primary/10" : "border-gray-200 shadow-sm hover:border-gray-300"}`}>
+                <button type="button" aria-expanded={isOpen} onClick={() => toggleFaq(faq.id)} className="w-full flex items-center justify-between p-6 text-left transition-colors hover:bg-gray-50/80 cursor-pointer">
+                  <div className="flex items-center gap-3 pr-4">
+                    <span className="hidden sm:inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-brand-gray text-brand-primary">{faq.category}</span>
+                    <span className="text-base md:text-lg font-semibold text-brand-dark">{faq.question}</span>
+                  </div>
+                  <div className={`p-2 rounded-xl shrink-0 transition-all duration-300 ${isOpen ? "bg-brand-primary text-brand-accent rotate-180" : "bg-gray-100 text-brand-dark/60"}`}>
+                    <ChevronDown size={18} />
+                  </div>
+                </button>
+                <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                  <div className="overflow-hidden px-6 pb-6 pt-2 text-brand-dark/75 leading-relaxed text-sm md:text-base border-t border-gray-100">{faq.answer}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
