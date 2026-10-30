@@ -1,0 +1,1049 @@
+// ====================================================================================================
+// ROI CALCULATOR COMPONENT - MASTER RECORDING CHEAT SHEET (TASK #4)
+// File: calculator_code_blocks.txt
+// Target: src/components/layout/RoiCalculator.tsx
+//
+// RECORDING SEQUENCE (Strictly Under 15 Minutes):
+// • PHASE 1: Cmd+A, Cmd+V the Phase 1 block -> Save -> Show responsive 2-column calculator layout in Chrome.
+// • PHASE 2: Cmd+A, Cmd+V the Phase 2 block -> Save -> Drag sliders & click presets to show real-time compound math.
+// • PHASE 3: Cmd+A, Cmd+V the Phase 3 block -> Save -> Show Framer Motion animated progress bar & Chrome DevTools check.
+// ====================================================================================================
+
+
+// ====================================================================================================
+// STARTING POINT (ORIGINAL STATIC STATE BEFORE TASK STARTS)
+// If you ever need to reset RoiCalculator.tsx back to its initial static state, paste this block:
+// ====================================================================================================
+
+import { Calculator, ArrowRight, ShieldCheck, DollarSign } from "lucide-react";
+
+export function RoiCalculator() {
+  return (
+    <section id="calculator" className="scroll-mt-24 pt-24 pb-28 bg-white border-t border-gray-100 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <Calculator size={14} />
+            <span>Investment Advisory</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight">
+            Capital Growth & Returns
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Arif Investment delivers targeted capital yields through turnkey civil infrastructure, engineering assets, and commercial ventures across Nigeria.
+          </p>
+        </div>
+
+        {/* Static Un-interactive Benchmark Card */}
+        <div className="max-w-4xl mx-auto bg-brand-gray/40 rounded-3xl p-8 sm:p-12 border border-gray-200 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mx-auto mb-6">
+            <DollarSign size={32} />
+          </div>
+
+          <h3 className="text-2xl font-bold text-brand-dark mb-3">
+            Fixed Investment Benchmark
+          </h3>
+          <p className="text-sm text-brand-dark/70 max-w-xl mx-auto mb-8 leading-relaxed">
+            Standard historical projection model based on a fixed $50,000 capital commitment yielding an estimated 18% annual return over a 5-year project timeline.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="p-4 rounded-2xl bg-white border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Benchmark Principal</p>
+              <p className="text-xl font-extrabold text-brand-dark mt-1">$50,000</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Target Term</p>
+              <p className="text-xl font-extrabold text-brand-dark mt-1">5 Years</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Historical Yield</p>
+              <p className="text-xl font-extrabold text-brand-primary mt-1">18% p.a.</p>
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-2 text-xs text-brand-dark/60 bg-white px-4 py-2 rounded-full border border-gray-200 mb-8">
+            <ShieldCheck size={14} className="text-brand-primary" />
+            <span>Static model. Interactive slider projections currently unavailable.</span>
+          </div>
+
+          <div>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-brand-primary text-brand-accent font-bold text-sm shadow-md hover:bg-brand-secondary transition-all"
+            >
+              <span>Contact Investment Desk</span>
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 1: RESPONSIVE 2-COLUMN CALCULATOR CARD & RANGE INPUT CONTROLS
+// (In RoiCalculator.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import {
+  TrendingUp,
+  Calculator,
+  Calendar,
+  Percent,
+  ShieldCheck,
+  ArrowRight,
+  Sparkles,
+  DollarSign,
+  Briefcase,
+} from "lucide-react";
+
+export function RoiCalculator() {
+  // Phase 1: Static initial display values for layout demonstration
+  const initialInvestment = 50000;
+  const monthlyContribution = 2500;
+  const years = 5;
+  const annualRate = 18;
+
+  const totalValue = 362698;
+  const totalPrincipal = 200000;
+  const totalGains = 162698;
+  const roiPercentage = 81;
+  const multiplier = "1.81";
+
+  const initialPresets = [25000, 50000, 100000, 250000];
+  const horizonPresets = [3, 5, 10, 15];
+
+  return (
+    <section id="calculator" className="scroll-mt-24 pt-24 pb-28 bg-white relative overflow-hidden border-t border-gray-100">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/3 -right-40 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <Calculator size={14} />
+            <span>Capital Growth Estimator</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            Interactive Investment & ROI Calculator
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Forecast prospective capital growth across Arif Investment infrastructure projects, turnkey construction ventures, and commercial equity portfolios.
+          </p>
+        </div>
+
+        {/* Main 2-Column Calculator Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Column: Sliders & Controls */}
+          <div className="lg:col-span-7 bg-brand-gray/40 rounded-3xl p-6 sm:p-8 lg:p-10 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+            <div className="space-y-8">
+              {/* Slider 1: Initial Investment */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="initial-investment" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <DollarSign size={16} className="text-brand-primary" />
+                    <span>Initial Capital Deployment</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${initialInvestment.toLocaleString()}
+                  </div>
+                </div>
+
+                <input
+                  id="initial-investment"
+                  type="range"
+                  min={10000}
+                  max={500000}
+                  step={5000}
+                  defaultValue={initialInvestment}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$10,000</span>
+                  <div className="flex gap-1.5">
+                    {initialPresets.map((val) => (
+                      <span
+                        key={val}
+                        className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${
+                          initialInvestment === val
+                            ? "bg-brand-primary text-brand-accent"
+                            : "bg-white text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        ${val >= 1000 ? `${val / 1000}k` : val}
+                      </span>
+                    ))}
+                  </div>
+                  <span>$500,000</span>
+                </div>
+              </div>
+
+              {/* Slider 2: Monthly Contribution */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="monthly-contribution" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <Briefcase size={16} className="text-brand-primary" />
+                    <span>Monthly Tranche Contribution</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${monthlyContribution.toLocaleString()}
+                    <span className="text-xs text-brand-dark/50 font-normal"> /mo</span>
+                  </div>
+                </div>
+
+                <input
+                  id="monthly-contribution"
+                  type="range"
+                  min={0}
+                  max={25000}
+                  step={500}
+                  defaultValue={monthlyContribution}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$0 /mo</span>
+                  <span>Max $25,000 /mo</span>
+                </div>
+              </div>
+
+              {/* Sliders 3 & 4: Time Horizon & Yield */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="time-horizon" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Calendar size={15} className="text-brand-primary" />
+                      <span>Horizon (Years)</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {years} Years
+                    </span>
+                  </div>
+
+                  <input
+                    id="time-horizon"
+                    type="range"
+                    min={1}
+                    max={20}
+                    step={1}
+                    defaultValue={years}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex gap-1.5 mt-2 justify-between">
+                    {horizonPresets.map((y) => (
+                      <span
+                        key={y}
+                        className={`flex-1 text-center py-1 rounded-md text-[11px] font-semibold ${
+                          years === y
+                            ? "bg-brand-primary text-brand-accent"
+                            : "bg-white text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        {y}y
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="projected-yield" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Percent size={15} className="text-brand-primary" />
+                      <span>Target Yield Rate</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {annualRate}% p.a.
+                    </span>
+                  </div>
+
+                  <input
+                    id="projected-yield"
+                    type="range"
+                    min={8}
+                    max={30}
+                    step={1}
+                    defaultValue={annualRate}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex items-center justify-between text-[11px] text-brand-dark/50 mt-2">
+                    <span>8% (Conservative)</span>
+                    <span className="font-semibold text-brand-primary">30% (Max)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-gray-200 flex items-start gap-2.5 text-xs text-brand-dark/60 leading-relaxed">
+              <ShieldCheck size={16} className="text-brand-primary shrink-0 mt-0.5" />
+              <span>
+                Calculations simulate monthly compounded investment returns typical of prime Nigerian civil infrastructure contracts and EPC asset delivery.
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Projected Results Display */}
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                  <Sparkles size={13} />
+                  <span>Projected Returns</span>
+                </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                  {multiplier}x Multiplier
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-1">
+                  Estimated Total Future Value
+                </p>
+                <div className="text-4xl sm:text-5xl font-black text-brand-accent tracking-tight">
+                  ${totalValue.toLocaleString()}
+                </div>
+                <p className="text-xs text-white/70 mt-1.5">
+                  Over a <strong className="text-white">{years}-year</strong> horizon at{" "}
+                  <strong className="text-white">{annualRate}%</strong> projected annual yield.
+                </p>
+              </div>
+
+              {/* Breakdown Grid */}
+              <div className="grid grid-cols-2 gap-4 pt-2 mb-6">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-white/50 mb-1">
+                    Total Invested
+                  </p>
+                  <p className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    ${totalPrincipal.toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-brand-primary/40 border border-brand-accent/20">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-brand-accent/80 mb-1">
+                    Compound Profit
+                  </p>
+                  <p className="text-lg sm:text-xl font-extrabold text-brand-accent tracking-tight">
+                    +${totalGains.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                <span className="flex items-center gap-2 text-xs font-medium text-white/80">
+                  <TrendingUp size={16} className="text-brand-accent" />
+                  <span>Net Return on Investment</span>
+                </span>
+                <span className="text-sm font-black text-brand-accent px-2.5 py-0.5 rounded-md bg-brand-accent/15">
+                  +{roiPercentage}% ROI
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-white/10">
+              <a
+                href="#contact"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg transition-all duration-200 cursor-pointer"
+              >
+                <span>Request Formal Investment Prospectus</span>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 2: REAL-TIME REACT STATE & COMPOUND INTEREST CALCULATIONS
+// (In RoiCalculator.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import { useState, useMemo } from "react";
+import {
+  TrendingUp,
+  Calculator,
+  Calendar,
+  Percent,
+  ShieldCheck,
+  ArrowRight,
+  Sparkles,
+  DollarSign,
+  Briefcase,
+} from "lucide-react";
+
+export function RoiCalculator() {
+  // Phase 2: Dynamic state hooks for live calculation
+  const [initialInvestment, setInitialInvestment] = useState<number>(50000);
+  const [monthlyContribution, setMonthlyContribution] = useState<number>(2500);
+  const [years, setYears] = useState<number>(5);
+  const [annualRate, setAnnualRate] = useState<number>(18);
+
+  // Dynamic compound interest formula
+  const calculation = useMemo(() => {
+    const r = annualRate / 100 / 12;
+    const n = years * 12;
+
+    const fvInitial = initialInvestment * Math.pow(1 + r, n);
+    const fvMonthly = r > 0 ? monthlyContribution * ((Math.pow(1 + r, n) - 1) / r) : monthlyContribution * n;
+
+    const totalValue = Math.round(fvInitial + fvMonthly);
+    const totalPrincipal = Math.round(initialInvestment + monthlyContribution * n);
+    const totalGains = Math.max(0, totalValue - totalPrincipal);
+    const roiPercentage = totalPrincipal > 0 ? Math.round((totalGains / totalPrincipal) * 100) : 0;
+    const multiplier = totalPrincipal > 0 ? (totalValue / totalPrincipal).toFixed(2) : "1.00";
+
+    const principalShare = totalValue > 0 ? Math.round((totalPrincipal / totalValue) * 100) : 50;
+    const gainsShare = 100 - principalShare;
+
+    return {
+      totalValue,
+      totalPrincipal,
+      totalGains,
+      roiPercentage,
+      multiplier,
+      principalShare,
+      gainsShare,
+    };
+  }, [initialInvestment, monthlyContribution, years, annualRate]);
+
+  const initialPresets = [25000, 50000, 100000, 250000];
+  const horizonPresets = [3, 5, 10, 15];
+
+  return (
+    <section id="calculator" className="scroll-mt-24 pt-24 pb-28 bg-white relative overflow-hidden border-t border-gray-100">
+      <div className="absolute top-1/3 -right-40 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <Calculator size={14} />
+            <span>Capital Growth Estimator</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            Interactive Investment & ROI Calculator
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Forecast prospective capital growth across Arif Investment infrastructure projects, turnkey construction ventures, and commercial equity portfolios.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="lg:col-span-7 bg-brand-gray/40 rounded-3xl p-6 sm:p-8 lg:p-10 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+            <div className="space-y-8">
+              {/* Slider 1: Initial Investment with Interactive Presets */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="initial-investment" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <DollarSign size={16} className="text-brand-primary" />
+                    <span>Initial Capital Deployment</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${initialInvestment.toLocaleString()}
+                  </div>
+                </div>
+
+                <input
+                  id="initial-investment"
+                  type="range"
+                  min={10000}
+                  max={500000}
+                  step={5000}
+                  value={initialInvestment}
+                  onChange={(e) => setInitialInvestment(Number(e.target.value))}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$10,000</span>
+                  <div className="flex gap-1.5">
+                    {initialPresets.map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setInitialInvestment(val)}
+                        className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                          initialInvestment === val
+                            ? "bg-brand-primary text-brand-accent shadow-xs"
+                            : "bg-white hover:bg-gray-100 text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        ${val >= 1000 ? `${val / 1000}k` : val}
+                      </button>
+                    ))}
+                  </div>
+                  <span>$500,000</span>
+                </div>
+              </div>
+
+              {/* Slider 2: Monthly Contribution */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="monthly-contribution" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <Briefcase size={16} className="text-brand-primary" />
+                    <span>Monthly Tranche Contribution</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${monthlyContribution.toLocaleString()}
+                    <span className="text-xs text-brand-dark/50 font-normal"> /mo</span>
+                  </div>
+                </div>
+
+                <input
+                  id="monthly-contribution"
+                  type="range"
+                  min={0}
+                  max={25000}
+                  step={500}
+                  value={monthlyContribution}
+                  onChange={(e) => setMonthlyContribution(Number(e.target.value))}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$0 /mo</span>
+                  <span>Max $25,000 /mo</span>
+                </div>
+              </div>
+
+              {/* Sliders 3 & 4: Time Horizon & Yield */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="time-horizon" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Calendar size={15} className="text-brand-primary" />
+                      <span>Horizon (Years)</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {years} {years === 1 ? "Year" : "Years"}
+                    </span>
+                  </div>
+
+                  <input
+                    id="time-horizon"
+                    type="range"
+                    min={1}
+                    max={20}
+                    step={1}
+                    value={years}
+                    onChange={(e) => setYears(Number(e.target.value))}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex gap-1.5 mt-2 justify-between">
+                    {horizonPresets.map((y) => (
+                      <button
+                        key={y}
+                        type="button"
+                        onClick={() => setYears(y)}
+                        className={`flex-1 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                          years === y
+                            ? "bg-brand-primary text-brand-accent shadow-xs"
+                            : "bg-white hover:bg-gray-100 text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        {y}y
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="projected-yield" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Percent size={15} className="text-brand-primary" />
+                      <span>Target Yield Rate</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {annualRate}% p.a.
+                    </span>
+                  </div>
+
+                  <input
+                    id="projected-yield"
+                    type="range"
+                    min={8}
+                    max={30}
+                    step={1}
+                    value={annualRate}
+                    onChange={(e) => setAnnualRate(Number(e.target.value))}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex items-center justify-between text-[11px] text-brand-dark/50 mt-2">
+                    <span>8% (Conservative)</span>
+                    <span className="font-semibold text-brand-primary">30% (Max)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-gray-200 flex items-start gap-2.5 text-xs text-brand-dark/60 leading-relaxed">
+              <ShieldCheck size={16} className="text-brand-primary shrink-0 mt-0.5" />
+              <span>
+                Calculations simulate monthly compounded investment returns typical of prime Nigerian civil infrastructure contracts and EPC asset delivery.
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Dynamic Projected Results Display */}
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                  <Sparkles size={13} />
+                  <span>Projected Returns</span>
+                </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                  {calculation.multiplier}x Multiplier
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-1">
+                  Estimated Total Future Value
+                </p>
+                <div className="text-4xl sm:text-5xl font-black text-brand-accent tracking-tight">
+                  ${calculation.totalValue.toLocaleString()}
+                </div>
+                <p className="text-xs text-white/70 mt-1.5">
+                  Over a <strong className="text-white">{years}-year</strong> horizon at{" "}
+                  <strong className="text-white">{annualRate}%</strong> projected annual yield.
+                </p>
+              </div>
+
+              {/* Breakdown Grid */}
+              <div className="grid grid-cols-2 gap-4 pt-2 mb-6">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-white/50 mb-1">
+                    Total Invested
+                  </p>
+                  <p className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    ${calculation.totalPrincipal.toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-brand-primary/40 border border-brand-accent/20">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-brand-accent/80 mb-1">
+                    Compound Profit
+                  </p>
+                  <p className="text-lg sm:text-xl font-extrabold text-brand-accent tracking-tight">
+                    +${calculation.totalGains.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                <span className="flex items-center gap-2 text-xs font-medium text-white/80">
+                  <TrendingUp size={16} className="text-brand-accent" />
+                  <span>Net Return on Investment</span>
+                </span>
+                <span className="text-sm font-black text-brand-accent px-2.5 py-0.5 rounded-md bg-brand-accent/15">
+                  +{calculation.roiPercentage}% ROI
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-white/10">
+              <a
+                href="#contact"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg transition-all duration-200 cursor-pointer"
+              >
+                <span>Request Formal Investment Prospectus</span>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 3: ANIMATED PROGRESS BAR VISUALIZATION & FRAMER MOTION DETAIL
+// (In RoiCalculator.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import {
+  TrendingUp,
+  Calculator,
+  Calendar,
+  Percent,
+  ShieldCheck,
+  ArrowRight,
+  Sparkles,
+  DollarSign,
+  Briefcase,
+} from "lucide-react";
+
+export function RoiCalculator() {
+  const [initialInvestment, setInitialInvestment] = useState<number>(50000);
+  const [monthlyContribution, setMonthlyContribution] = useState<number>(2500);
+  const [years, setYears] = useState<number>(5);
+  const [annualRate, setAnnualRate] = useState<number>(18);
+
+  const calculation = useMemo(() => {
+    const r = annualRate / 100 / 12;
+    const n = years * 12;
+
+    const fvInitial = initialInvestment * Math.pow(1 + r, n);
+    const fvMonthly = r > 0 ? monthlyContribution * ((Math.pow(1 + r, n) - 1) / r) : monthlyContribution * n;
+
+    const totalValue = Math.round(fvInitial + fvMonthly);
+    const totalPrincipal = Math.round(initialInvestment + monthlyContribution * n);
+    const totalGains = Math.max(0, totalValue - totalPrincipal);
+    const roiPercentage = totalPrincipal > 0 ? Math.round((totalGains / totalPrincipal) * 100) : 0;
+    const multiplier = totalPrincipal > 0 ? (totalValue / totalPrincipal).toFixed(2) : "1.00";
+
+    const principalShare = totalValue > 0 ? Math.round((totalPrincipal / totalValue) * 100) : 50;
+    const gainsShare = 100 - principalShare;
+
+    return {
+      totalValue,
+      totalPrincipal,
+      totalGains,
+      roiPercentage,
+      multiplier,
+      principalShare,
+      gainsShare,
+    };
+  }, [initialInvestment, monthlyContribution, years, annualRate]);
+
+  const initialPresets = [25000, 50000, 100000, 250000];
+  const horizonPresets = [3, 5, 10, 15];
+
+  return (
+    <section id="calculator" className="scroll-mt-24 pt-24 pb-28 bg-white relative overflow-hidden border-t border-gray-100">
+      <div className="absolute top-1/3 -right-40 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <Calculator size={14} />
+            <span>Capital Growth Estimator</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            Interactive Investment & ROI Calculator
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Forecast prospective capital growth across Arif Investment infrastructure projects, turnkey construction ventures, and commercial equity portfolios.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="lg:col-span-7 bg-brand-gray/40 rounded-3xl p-6 sm:p-8 lg:p-10 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+            <div className="space-y-8">
+              {/* Slider 1: Initial Investment */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="initial-investment" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <DollarSign size={16} className="text-brand-primary" />
+                    <span>Initial Capital Deployment</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${initialInvestment.toLocaleString()}
+                  </div>
+                </div>
+
+                <input
+                  id="initial-investment"
+                  type="range"
+                  min={10000}
+                  max={500000}
+                  step={5000}
+                  value={initialInvestment}
+                  onChange={(e) => setInitialInvestment(Number(e.target.value))}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$10,000</span>
+                  <div className="flex gap-1.5">
+                    {initialPresets.map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setInitialInvestment(val)}
+                        className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                          initialInvestment === val
+                            ? "bg-brand-primary text-brand-accent shadow-xs"
+                            : "bg-white hover:bg-gray-100 text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        ${val >= 1000 ? `${val / 1000}k` : val}
+                      </button>
+                    ))}
+                  </div>
+                  <span>$500,000</span>
+                </div>
+              </div>
+
+              {/* Slider 2: Monthly Contribution */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="monthly-contribution" className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                    <Briefcase size={16} className="text-brand-primary" />
+                    <span>Monthly Tranche Contribution</span>
+                  </label>
+                  <div className="text-base sm:text-xl font-black text-brand-dark bg-white px-3.5 py-1 rounded-xl border border-gray-200 shadow-2xs">
+                    ${monthlyContribution.toLocaleString()}
+                    <span className="text-xs text-brand-dark/50 font-normal"> /mo</span>
+                  </div>
+                </div>
+
+                <input
+                  id="monthly-contribution"
+                  type="range"
+                  min={0}
+                  max={25000}
+                  step={500}
+                  value={monthlyContribution}
+                  onChange={(e) => setMonthlyContribution(Number(e.target.value))}
+                  className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between text-xs text-brand-dark/40 font-medium mt-2">
+                  <span>$0 /mo</span>
+                  <span>Max $25,000 /mo</span>
+                </div>
+              </div>
+
+              {/* Sliders 3 & 4: Time Horizon & Yield */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="time-horizon" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Calendar size={15} className="text-brand-primary" />
+                      <span>Horizon (Years)</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {years} {years === 1 ? "Year" : "Years"}
+                    </span>
+                  </div>
+
+                  <input
+                    id="time-horizon"
+                    type="range"
+                    min={1}
+                    max={20}
+                    step={1}
+                    value={years}
+                    onChange={(e) => setYears(Number(e.target.value))}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex gap-1.5 mt-2 justify-between">
+                    {horizonPresets.map((y) => (
+                      <button
+                        key={y}
+                        type="button"
+                        onClick={() => setYears(y)}
+                        className={`flex-1 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                          years === y
+                            ? "bg-brand-primary text-brand-accent shadow-xs"
+                            : "bg-white hover:bg-gray-100 text-brand-dark/70 border border-gray-200"
+                        }`}
+                      >
+                        {y}y
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="projected-yield" className="flex items-center gap-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-dark/70">
+                      <Percent size={15} className="text-brand-primary" />
+                      <span>Target Yield Rate</span>
+                    </label>
+                    <span className="text-sm sm:text-base font-extrabold text-brand-primary bg-brand-primary/10 px-2.5 py-0.5 rounded-lg">
+                      {annualRate}% p.a.
+                    </span>
+                  </div>
+
+                  <input
+                    id="projected-yield"
+                    type="range"
+                    min={8}
+                    max={30}
+                    step={1}
+                    value={annualRate}
+                    onChange={(e) => setAnnualRate(Number(e.target.value))}
+                    className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary focus:outline-none"
+                  />
+
+                  <div className="flex items-center justify-between text-[11px] text-brand-dark/50 mt-2">
+                    <span>8% (Conservative)</span>
+                    <span className="font-semibold text-brand-primary">30% (Max)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-gray-200 flex items-start gap-2.5 text-xs text-brand-dark/60 leading-relaxed">
+              <ShieldCheck size={16} className="text-brand-primary shrink-0 mt-0.5" />
+              <span>
+                Calculations simulate monthly compounded investment returns typical of prime Nigerian civil infrastructure contracts and EPC asset delivery.
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Animated Projected Results Display */}
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                  <Sparkles size={13} />
+                  <span>Projected Returns</span>
+                </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                  {calculation.multiplier}x Multiplier
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-1">
+                  Estimated Total Future Value
+                </p>
+                <motion.div
+                  key={calculation.totalValue}
+                  initial={{ scale: 0.96, opacity: 0.8 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-4xl sm:text-5xl font-black text-brand-accent tracking-tight"
+                >
+                  ${calculation.totalValue.toLocaleString()}
+                </motion.div>
+                <p className="text-xs text-white/70 mt-1.5">
+                  Over a <strong className="text-white">{years}-year</strong> horizon at{" "}
+                  <strong className="text-white">{annualRate}%</strong> projected annual yield.
+                </p>
+              </div>
+
+              {/* Animated Stacked Capital Growth Progress Bar (Phase 3) */}
+              <div className="mb-6 p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between text-xs mb-2 font-semibold">
+                  <span className="flex items-center gap-1.5 text-white/80">
+                    <span className="w-2.5 h-2.5 rounded-full bg-white/40" />
+                    Principal: {calculation.principalShare}%
+                  </span>
+                  <span className="flex items-center gap-1.5 text-brand-accent">
+                    <span className="w-2.5 h-2.5 rounded-full bg-brand-accent" />
+                    Gains: {calculation.gainsShare}%
+                  </span>
+                </div>
+
+                <div className="w-full h-3.5 bg-white/10 rounded-full overflow-hidden flex">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${calculation.principalShare}%` }}
+                    transition={{ type: "spring", stiffness: 80, damping: 15 }}
+                    className="h-full bg-white/40"
+                    title={`Principal: $${calculation.totalPrincipal.toLocaleString()}`}
+                  />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${calculation.gainsShare}%` }}
+                    transition={{ type: "spring", stiffness: 80, damping: 15 }}
+                    className="h-full bg-brand-accent"
+                    title={`Compound Gains: $${calculation.totalGains.toLocaleString()}`}
+                  />
+                </div>
+              </div>
+
+              {/* Breakdown Grid */}
+              <div className="grid grid-cols-2 gap-4 pt-2 mb-6">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-white/50 mb-1">
+                    Total Invested
+                  </p>
+                  <p className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    ${calculation.totalPrincipal.toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-brand-primary/40 border border-brand-accent/20">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-brand-accent/80 mb-1">
+                    Compound Profit
+                  </p>
+                  <p className="text-lg sm:text-xl font-extrabold text-brand-accent tracking-tight">
+                    +${calculation.totalGains.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                <span className="flex items-center gap-2 text-xs font-medium text-white/80">
+                  <TrendingUp size={16} className="text-brand-accent" />
+                  <span>Net Return on Investment</span>
+                </span>
+                <span className="text-sm font-black text-brand-accent px-2.5 py-0.5 rounded-md bg-brand-accent/15">
+                  +{calculation.roiPercentage}% ROI
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-white/10">
+              <a
+                href="#contact"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+              >
+                <span>Request Formal Investment Prospectus</span>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// SPOKEN EPILOGUE SCRIPT FOR RECORDING (Read out loud at the end of Phase 3):
+// ====================================================================================================
+// "To conclude our fourth task, we have built a high-converting Interactive ROI Investment Calculator
+//  for Arif Investment Nigeria. In Phase 1, we established a responsive dual-column layout with accessible
+//  slider inputs and quick preset buttons. In Phase 2, we wired up React useState and useMemo to calculate
+//  compound interest, principal allocation, and net yield in real-time. Finally, in Phase 3, we integrated
+//  a Framer Motion-animated proportional capital growth bar with responsive verification across desktop,
+//  tablet, and mobile viewports."
+// ====================================================================================================

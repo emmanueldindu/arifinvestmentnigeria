@@ -1,125 +1,457 @@
+
 "use client";
 
-import { motion } from "framer-motion";
-import { Wrench, HardHat, Wifi, Home, Truck, ShoppingCart, Hammer, CheckCircle2 } from "lucide-react";
+import { useState, Fragment } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  CheckCircle2,
+  Minus,
+  ChevronDown,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Building2,
+  HardHat,
+  Zap,
+} from "lucide-react";
 
-const services = [
+export type BillingCycle = "monthly" | "annual";
+
+export interface ServiceTier {
+  id: string;
+  name: string;
+  tagline: string;
+  badge?: string;
+  isPopular?: boolean;
+  icon: typeof HardHat;
+  monthlyPrice: number;
+  annualPrice: number;
+  description: string;
+  deliverables: string[];
+  ctaText: string;
+}
+
+export const serviceTiers: ServiceTier[] = [
   {
-    icon: Wrench,
-    title: "Engineering Services",
-    description: "We offers contracting services on a wide variety of projects; from Conception & Finance, Road Construction and Road Rehabilitation, Design; Build operate & Transfer (BOT) to Public Private Partnership Contracts as well as the conventional building contracts. Backed by significant human capital material resources, the Company is well placed to effectively implement various construction projects of any size and complexity."
-  },
-  {
-    icon: HardHat,
-    title: "Building/Road Construction & Rehabilitation",
-    description: "Our company’s expertise ranges from office blocks to shopping centres, residential developments, car parks, airports, hospitals and schools. The rush for our services is a testament to our capability and the calibre of work that we can deliver to our clients and the value derivable from such projects."
-  },
-  {
-    icon: Wifi,
-    title: "IT & Telecommunications",
-    description: "Wireless Services, IP & Fiber Services, Drive Tests & Optimization, Structured Cabling & Traffic Migration and proven technologies for achieving and exceeding the level of performance required by the modern applications for telecommunication systems. Procurement Commercial, industrial and technical procurement and supply services."
-  },
-  {
-    icon: Home,
-    title: "Real Estate",
-    description: "“A new place for living” We have long-standing experience in the development, planning and completion of building projects. Our knowledge concerning the demands and requirements of our customers is of benefit as regards the quality of the buildings."
-  },
-  {
-    icon: Truck,
-    title: "Supply of Construction Equipment",
-    description: "We supply any types of construction equipments such as Backhoe, Bulldozers, Excavators, etc."
-  },
-  {
-    icon: ShoppingCart,
-    title: "Procurement",
-    description: "Our procurement team are experienced in managing and performing procurement activities for diverse projects and contracts while expertly sourcing for anything our clients require – anywhere – from highly trusted sources."
-  },
-  {
-    icon: Hammer,
-    title: "Construction & Trade Services",
-    description: "We provide comprehensive building, construction, renovation and maintenance services across residential, commercial and industrial projects. Our trade capabilities include:",
-    list: [
-      "Painting and decorating works",
-      "Carpentry and joinery",
-      "Joinery installation and finishing",
-      "Bricklaying and blockwork",
-      "Wall and floor tiling",
-      "Glazing and glass installation",
-      "Plumbing and associated building services",
-      "Mechanical fitting and installation",
-      "Building repairs and maintenance",
-      "General construction and finishing works"
+    id: "advisory",
+    name: "Project Advisory & Feasibility",
+    tagline: "Pre-construction technical auditing & environmental planning",
+    icon: Building2,
+    monthlyPrice: 4800,
+    annualPrice: 3840,
+    description: "Designed for land developers, corporate asset holders, and investors requiring rigorous engineering assessments and regulatory green-lights before capital deployment.",
+    deliverables: [
+      "Geotechnical soil bearing & hydrological tests",
+      "COREN-certified structural integrity audit",
+      "Environmental Impact Assessment (EIA) filing",
+      "Comprehensive Bill of Engineering Measurement (BEME)",
+      "Bi-weekly technical advisory board calls",
+      "Town planning & statutory permits liaison",
     ],
-    footer: "Projects are delivered by suitably skilled trades personnel in accordance with specifications, building standards and safety requirements."
-  }
+    ctaText: "Select Advisory Plan",
+  },
+  {
+    id: "turnkey-epc",
+    name: "Turnkey EPC & Project Execution",
+    tagline: "End-to-end design, construction & site supervision",
+    badge: "Most Popular",
+    isPopular: true,
+    icon: HardHat,
+    monthlyPrice: 12500,
+    annualPrice: 10000,
+    description: "Our core contracting model delivering full Engineering, Procurement, and Construction execution for high-rise commercial towers, roads, and residential estates.",
+    deliverables: [
+      "Turnkey site mobilization & construction execution",
+      "Dedicated heavy machinery fleet (Excavators, Graders)",
+      "Full-time on-site Resident Structural Engineer",
+      "Continuous COREN & HSE safety compliance QA/QC",
+      "Post-tensioned concrete & structural steel fabrication",
+      "Strict milestone schedule SLA with penalty guarantees",
+      "Dedicated Project Director executive contact",
+    ],
+    ctaText: "Deploy Turnkey EPC",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise Infrastructure Retainer",
+    tagline: "Multi-site industrial contracting & mission-critical SLA",
+    badge: "Institutional",
+    icon: Zap,
+    monthlyPrice: 28000,
+    annualPrice: 22400,
+    description: "Tailored for multinational energy consortiums, telecoms network operators, and state infrastructure agencies requiring high-priority asset maintenance and rapid mobilization.",
+    deliverables: [
+      "Dedicated multi-disciplinary rapid response engineering team",
+      "24/7/365 infrastructure emergency repair & spares SLA",
+      "Direct OEM equipment supply chain & fast-track freight",
+      "Offshore energy facility & hazardous area certified works",
+      "5G telecom fiber trunk & cell tower continuous maintenance",
+      "Strategic Public-Private Partnership (PPP) structuring",
+      "Executive board consultation & quarterly project audits",
+    ],
+    ctaText: "Engage Enterprise Tier",
+  },
+];
+
+interface ComparisonCategory {
+  category: string;
+  features: {
+    name: string;
+    advisory: string | boolean;
+    turnkey: string | boolean;
+    enterprise: string | boolean;
+  }[];
+}
+
+const comparisonData: ComparisonCategory[] = [
+  {
+    category: "Engineering & Technical Delivery",
+    features: [
+      {
+        name: "Soil Bearing & Geotechnical Testing",
+        advisory: true,
+        turnkey: true,
+        enterprise: true,
+      },
+      {
+        name: "Full Turnkey Construction Execution",
+        advisory: false,
+        turnkey: true,
+        enterprise: true,
+      },
+      {
+        name: "On-Site COREN Resident Engineer",
+        advisory: "Periodic Audits",
+        turnkey: "Full-Time Dedicated",
+        enterprise: "Multi-Team Fleet",
+      },
+      {
+        name: "Post-Tensioned & Steel Superstructure",
+        advisory: "Inspection Only",
+        turnkey: "Full Turnkey Build",
+        enterprise: "Full Turnkey Build",
+      },
+    ],
+  },
+  {
+    category: "Machinery, Procurement & Fleet",
+    features: [
+      {
+        name: "Heavy Construction Fleet Mobilization",
+        advisory: false,
+        turnkey: "Included in Scope",
+        enterprise: "Dedicated Standby Fleet",
+      },
+      {
+        name: "Direct OEM Sourcing & Customs Logistics",
+        advisory: "Advisory Guidance",
+        turnkey: "Priority Clearance",
+        enterprise: "Fast-Track Air/Sea Freight",
+      },
+      {
+        name: "Telecom & Precision Power Spares Depot",
+        advisory: false,
+        turnkey: "Project Specific",
+        enterprise: "24/7 Warehoused Reserves",
+      },
+    ],
+  },
+  {
+    category: "Quality Assurance & Service Level Agreements",
+    features: [
+      {
+        name: "HSE Risk & Environmental Compliance",
+        advisory: "Initial EIA",
+        turnkey: "ISO 9001 QA/QC",
+        enterprise: "Zero-LTI Protocol & Audits",
+      },
+      {
+        name: "Emergency Breakdown & Site Response SLA",
+        advisory: "48 Business Hours",
+        turnkey: "12 Hours Guaranteed",
+        enterprise: "Under 4 Hours (24/7/365)",
+      },
+      {
+        name: "Dedicated Project Executive Liaison",
+        advisory: "Senior Consultant",
+        turnkey: "Project Director",
+        enterprise: "Executive Board Member",
+      },
+    ],
+  },
 ];
 
 export function Services() {
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>("annual");
+  const [showComparison, setShowComparison] = useState(false);
+
   return (
-    <section id="services" className="py-24 bg-brand-gray/50 overflow-hidden">
+    <section id="services" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 border-t border-gray-200 relative overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-brand-primary tracking-tight mb-4">
-            Our Services
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-semibold uppercase tracking-wider mb-3">
+            <ShieldCheck size={14} />
+            <span>Structured Engagement Models</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-brand-primary tracking-tight mb-4">
+            Service Tiers & Pricing
           </h2>
-          <div className="w-20 h-1.5 bg-brand-accent rounded-full mx-auto mb-6"></div>
-          <p className="text-brand-dark/70 text-lg">
-            Delivering high-quality solutions across multiple sectors with precision and professionalism.
+          <div className="w-16 h-1 bg-brand-accent rounded-full mx-auto mb-4"></div>
+          <p className="text-brand-dark/75 text-base md:text-lg">
+            Choose the optimal engineering, civil infrastructure, or procurement model scaled to your project timeline and budget.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: false, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: (idx % 3) * 0.15 }}
-              className="group bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden h-full flex flex-col"
+        <div className="flex items-center justify-center mb-16">
+          <div className="bg-white p-1.5 rounded-full border border-gray-200 shadow-sm inline-flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setBillingCycle("monthly")}
+              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                billingCycle === "monthly"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary"
+              }`}
             >
-              {/* Hover Effect Background */}
-              <div className="absolute inset-0 bg-brand-primary transform scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom z-0"></div>
-              
-              <div className="relative z-10 flex-1 flex flex-col">
-                <div className="w-14 h-14 bg-brand-gray rounded-2xl flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-accent group-hover:text-brand-primary transition-colors duration-300">
-                  <service.icon size={28} />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-brand-dark mb-4 group-hover:text-white transition-colors duration-300">
-                  {service.title}
-                </h3>
-                
-                <p className="text-brand-dark/70 leading-relaxed group-hover:text-white/80 transition-colors duration-300">
-                  {service.description}
-                </p>
+              Monthly Retainer
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingCycle("annual")}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                billingCycle === "annual"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary"
+              }`}
+            >
+              <span>Annual Contract</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                  billingCycle === "annual"
+                    ? "bg-brand-secondary text-brand-accent"
+                    : "bg-brand-accent text-brand-primary"
+                }`}
+              >
+                Save 20%
+              </span>
+            </button>
+          </div>
+        </div>
 
-                {service.list && (
-                  <ul className="mt-4 space-y-2 text-sm text-brand-dark/70 group-hover:text-white/80 transition-colors duration-300">
-                    {service.list.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 size={16} className="mt-0.5 text-brand-accent shrink-0 group-hover:text-white transition-colors duration-300" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-16">
+          {serviceTiers.map((tier) => {
+            const price = billingCycle === "annual" ? tier.annualPrice : tier.monthlyPrice;
+            const savings = (tier.monthlyPrice - tier.annualPrice) * 12;
+
+            return (
+              <div
+                key={tier.id}
+                className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 ${
+                  tier.isPopular
+                    ? "bg-white border-2 border-brand-primary shadow-xl ring-2 ring-brand-primary/10 lg:-translate-y-2"
+                    : "bg-white border border-gray-200 shadow-sm hover:shadow-lg hover:-translate-y-1"
+                }`}
+              >
+                {tier.badge && (
+                  <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent shadow-md border border-brand-accent/20">
+                      <Sparkles size={12} />
+                      {tier.badge}
+                    </span>
+                  </div>
                 )}
 
-                {service.footer && (
-                  <p className="mt-4 text-xs italic text-brand-dark/60 group-hover:text-white/70 transition-colors duration-300">
-                    {service.footer}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`p-3 rounded-2xl ${tier.isPopular ? "bg-brand-primary/10 text-brand-primary" : "bg-gray-100 text-brand-dark"}`}>
+                      <tier.icon size={26} />
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-brand-dark/50">
+                      {tier.id === "advisory" ? "Tier 1" : tier.id === "turnkey-epc" ? "Tier 2" : "Tier 3"}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-brand-dark mb-2">
+                    {tier.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-brand-dark/70 mb-6 leading-relaxed">
+                    {tier.tagline}
                   </p>
-                )}
+
+                  <div className="mb-6 p-4 rounded-2xl bg-brand-gray/50 border border-gray-200/80">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight">
+                        ${price.toLocaleString()}
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-brand-dark/60">
+                        / month
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-brand-dark/60 mt-1">
+                      {billingCycle === "annual" ? (
+                        <span className="text-brand-primary font-bold">
+                          Billed annually · Saves ${savings.toLocaleString()}/year
+                        </span>
+                      ) : (
+                        "Billed monthly with flexible contract terms"
+                      )}
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-brand-dark/80 mb-6 leading-relaxed">
+                    {tier.description}
+                  </p>
+
+                  <div className="space-y-3 mb-8">
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+                      Key Deliverables Included:
+                    </p>
+                    {tier.deliverables.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-brand-dark/85">
+                        <CheckCircle2 size={16} className="text-brand-primary shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-gray-100">
+                  <a
+                    href="#contact"
+                    className={`w-full py-3.5 px-6 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-xs cursor-pointer ${
+                      tier.isPopular
+                        ? "bg-brand-primary text-brand-accent hover:bg-brand-secondary shadow-md"
+                        : "bg-gray-100 text-brand-dark hover:bg-brand-primary hover:text-white"
+                    }`}
+                  >
+                    <span>{tier.ctaText}</span>
+                    <ArrowRight size={16} />
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="text-center mb-10">
+          <button
+            type="button"
+            onClick={() => setShowComparison(!showComparison)}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-gray-200 text-brand-primary font-bold text-sm shadow-xs hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer"
+          >
+            <span>{showComparison ? "Hide Comparison Matrix" : "Compare All Tier Specifications & Deliverables"}</span>
+            <ChevronDown
+              size={18}
+              className={`transition-transform duration-300 ${showComparison ? "rotate-180 text-brand-primary" : "text-brand-dark/50"}`}
+            />
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {showComparison && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="bg-white rounded-3xl border border-gray-200 shadow-md overflow-hidden max-w-5xl mx-auto">
+                <div className="p-6 md:p-8 bg-brand-primary text-white text-center">
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-2">
+                    Comprehensive Service Tier Breakdown
+                  </h3>
+                  <p className="text-white/70 text-xs md:text-sm">
+                    Direct comparison of technical oversight, equipment allocation, and service level commitments across each engagement model.
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-gray-200 bg-gray-50/70 text-xs sm:text-sm text-brand-dark/80">
+                        <th className="p-4 sm:p-5 font-bold w-2/5">Capabilities & Scope</th>
+                        <th className="p-4 sm:p-5 font-bold text-center w-1/5">Advisory</th>
+                        <th className="p-4 sm:p-5 font-bold text-center w-1/5 text-brand-primary bg-brand-primary/5">
+                          Turnkey EPC
+                        </th>
+                        <th className="p-4 sm:p-5 font-bold text-center w-1/5">Enterprise</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {comparisonData.map((section, sIdx) => (
+                        <Fragment key={sIdx}>
+                          <tr className="bg-brand-gray/60 border-y border-gray-200">
+                            <td colSpan={4} className="p-3 px-5 text-xs font-bold uppercase tracking-wider text-brand-primary">
+                              {section.category}
+                            </td>
+                          </tr>
+                          {section.features.map((feature, fIdx) => (
+                            <tr key={fIdx} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors text-xs sm:text-sm text-brand-dark/85">
+                              <td className="p-4 sm:p-5 font-medium text-brand-dark">{feature.name}</td>
+                              
+                              <td className="p-4 sm:p-5 text-center">
+                                {typeof feature.advisory === "boolean" ? (
+                                  feature.advisory ? (
+                                    <CheckCircle2 size={18} className="text-brand-primary mx-auto" />
+                                  ) : (
+                                    <Minus size={18} className="text-gray-300 mx-auto" />
+                                  )
+                                ) : (
+                                  <span className="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-brand-dark/75 font-semibold">
+                                    {feature.advisory}
+                                  </span>
+                                )}
+                              </td>
+
+                              <td className="p-4 sm:p-5 text-center bg-brand-primary/5">
+                                {typeof feature.turnkey === "boolean" ? (
+                                  feature.turnkey ? (
+                                    <CheckCircle2 size={18} className="text-brand-primary mx-auto" />
+                                  ) : (
+                                    <Minus size={18} className="text-gray-300 mx-auto" />
+                                  )
+                                ) : (
+                                  <span className="text-xs px-2.5 py-1 rounded-md bg-brand-primary text-brand-accent font-bold">
+                                    {feature.turnkey}
+                                  </span>
+                                )}
+                              </td>
+
+                              <td className="p-4 sm:p-5 text-center">
+                                {typeof feature.enterprise === "boolean" ? (
+                                  feature.enterprise ? (
+                                    <CheckCircle2 size={18} className="text-brand-primary mx-auto" />
+                                  ) : (
+                                    <Minus size={18} className="text-gray-300 mx-auto" />
+                                  )
+                                ) : (
+                                  <span className="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-brand-dark font-bold">
+                                    {feature.enterprise}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="p-6 bg-gray-50 border-t border-gray-200 text-center">
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-primary text-brand-accent font-bold text-sm shadow-md hover:bg-brand-secondary transition-all cursor-pointer"
+                  >
+                    <span>Request Custom Scope Consultation</span>
+                    <ArrowRight size={16} />
+                  </a>
+                </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

@@ -1,0 +1,153 @@
+"use client"
+import { Leaf, Users, Building, ShieldCheck, Award, Sparkles, ArrowRight, TrendingUp, Droplets, Zap, HardHat, HeartHandshake, FileCheck2, CheckCircle2 } from "lucide-react";
+import {useState} from 'react'
+import {motion, AnimatePresence} from 'framer-motion'
+export type EsgCategory = "environmental" | "social" | "governance";
+
+export const esgData: Record<EsgCategory, any> = {
+  environmental: {
+    category: "environmental",
+    title: "Environmental Stewardship",
+    tagline: "Eco-resilient civil engineering, sustainable materials & low-carbon site execution",
+    highlightText: "Pioneering eco-friendly construction techniques, solar-powered field staging, and circular concrete reclamation across all Niger Delta and federal infrastructure sites.",
+    kpis: [
+      { label: "Net Carbon Offset", value: "14,250 MT" },
+      { label: "Solar Site Electrification", value: "68%" },
+      { label: "Recycled Road Asphalt", value: "42%" },
+    ],
+    sdgGoals: ["SDG 7: Affordable Clean Energy", "SDG 11: Sustainable Cities", "SDG 13: Climate Action"],
+    metrics: [
+      { id: "carbon", name: "Annual Carbon Abatement", value: "14,250 MT", target: "Target: 18,000 MT", percentage: 79, icon: Zap, description: "Direct emission reductions achieved through Tier 4 heavy equipment fleets." },
+      { id: "energy", name: "Renewable Energy on Sites", value: "68%", target: "Target: 85%", percentage: 80, icon: Leaf, description: "Mobile photovoltaic hybrid micro-grids replacing diesel generation." },
+      { id: "materials", name: "Circular & Recycled Aggregates", value: "42%", target: "Target: 50%", percentage: 84, icon: TrendingUp, description: "Re-engineered reclaimed asphalt pavement (RAP) in structural courses." },
+      { id: "water", name: "Ecological Dredging", value: "1.2M Liters", target: "Target: 1.5M Liters", percentage: 80, icon: Droplets, description: "Sediment containment and water filtration safeguarding coastal waterways." },
+    ],
+  },
+  social: {
+    category: "social",
+    title: "Social Impact & Community Empowerment",
+    tagline: "Skills acquisition, youth workforce training, and critical community welfare assets",
+    highlightText: "Investing directly in host community stability through COREN-certified technical apprentice programs and healthcare infrastructure.",
+    kpis: [
+      { label: "Local Youths Upskilled", value: "2,840+" },
+      { label: "Clean Boreholes Drilled", value: "86 Units" },
+      { label: "Zero-Incident Safe Hours", value: "1.85M" },
+    ],
+    sdgGoals: ["SDG 4: Quality Education", "SDG 6: Clean Water", "SDG 8: Decent Work"],
+    metrics: [
+      { id: "youth", name: "Vocational Apprenticeships", value: "2,840 Youths", target: "Target: 3,500 Youths", percentage: 81, icon: Users, description: "Certified training programs in pipeline welding and electrical wiring." },
+      { id: "water-wells", name: "Community Water Facilities", value: "86 Boreholes", target: "Target: 100 Wells", percentage: 86, icon: Droplets, description: "Deep motorized water wells drilled in rural communities." },
+      { id: "safety", name: "Zero LTI Record", value: "1.85M Hours", target: "Target: 2.0M Hours", percentage: 92, icon: HardHat, description: "Rigorous daily HSE tool-box talks and strict adherence to codes." },
+      { id: "local-content", name: "Local Content Spend", value: "74%", target: "Target: 80%", percentage: 92, icon: HeartHandshake, description: "Procurement prioritising domestic sub-contractors and logistics." },
+    ],
+  },
+  governance: {
+    category: "governance",
+    title: "Corporate Governance & Ethical Leadership",
+    tagline: "Rigorous regulatory compliance, federal rating integrity & zero-tolerance anti-corruption",
+    highlightText: "Operating with absolute transparency under Nigerian CAMA corporate law and COREN professional certifications.",
+    kpis: [
+      { label: "Statutory Compliance", value: "100%" },
+      { label: "ISO 9001/45001 Score", value: "98.4%" },
+      { label: "PPP Milestones on Time", value: "92%" },
+    ],
+    sdgGoals: ["SDG 9: Industry & Innovation", "SDG 16: Strong Institutions", "SDG 17: Partnerships"],
+    metrics: [
+      { id: "compliance", name: "Statutory Audit Compliance", value: "100%", target: "Target: 100%", percentage: 100, icon: ShieldCheck, description: "Unqualified clean audit reports from the Federal Ministry of Works." },
+      { id: "iso", name: "ISO QA/QC Rating", value: "98.4%", target: "Target: 100%", percentage: 98, icon: Award, description: "Standardized quality control checklists ensuring ASTM norms." },
+      { id: "milestones", name: "PPP Milestones", value: "24 of 26", target: "Target: 26 Delivered", percentage: 92, icon: FileCheck2, description: "Milestones delivered on or ahead of schedule with digital logs." },
+      { id: "ethics", name: "Anti-Bribery Certification", value: "100%", target: "Target: 100%", percentage: 100, icon: CheckCircle2, description: "Mandatory annual ethics and anti-corruption re-certification." },
+    ],
+  },
+};
+
+
+export function EsgDashboard() {
+  const [activeTab, setActiveTab] = useState<EsgCategory>('environmental')
+  const currentData = esgData[activeTab]
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability & ESG Accountability</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            ESG Impact & Accountability Dashboard
+          </h2>
+
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white border border-gray-200 shadow-sm max-w-full overflow-x-auto">
+            <button onClick={() => setActiveTab('environmental')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "environmental" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Leaf size={16} /> <span>Environmental</span>
+            </button>
+            <button onClick={() => setActiveTab('social')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "social" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Users size={16} /> <span>Social Impact</span>
+            </button>
+            <button onClick={() => setActiveTab('governance')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "governance" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Building size={16} /> <span>Governance</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2">{currentData.title}</h3>
+              <p className="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">{currentData.highlightText}</p>
+            </div>
+
+            <div className="space-y-4">
+              {currentData.metrics.map((metric: any, idx: number) => {
+                const Icon = metric.icon;
+                return (
+                  <div key={metric.id} className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                          <Icon size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-bold text-brand-dark">{metric.name}</h4>
+                          <p className="text-xs text-brand-dark/60 mt-0.5">{metric.description}</p>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-base sm:text-lg font-black text-brand-dark">{metric.value}</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                      {/* PROGRESS BAR DIV TO ANIMATE LATER */}
+                      <motion.div className="h-full bg-brand-primary rounded-full relative" initial={{width:0}} animate={{width:`${metric.percentage}%`}} style={{ width: `${metric.percentage}%` }}>
+                         <div className="absolute top-0 right-0 bottom-0 w-2 bg-brand-accent rounded-full" />
+                      </motion.div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">Accountability Metrics</h3>
+              <div className="space-y-3 mt-8">
+                {currentData.kpis.map((kpi: any, kIdx: number) => (
+                  <div key={kIdx} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                    <span className="text-xs text-white/70 font-medium">{kpi.label}</span>
+                    <span className="text-lg sm:text-xl font-extrabold text-brand-accent">{kpi.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+

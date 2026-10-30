@@ -1,0 +1,1397 @@
+// ====================================================================================================
+// ESG IMPACT DASHBOARD COMPONENT - MASTER RECORDING CHEAT SHEET (TASK #5)
+// File: esg_code_blocks.txt
+// Target: src/components/layout/EsgDashboard.tsx
+//
+// RECORDING SEQUENCE (Strictly Under 15 Minutes):
+// • STARTING POINT: Shows static sustainability text card in Chrome (no interactive tabs or charts).
+// • PHASE 1: Cmd+A, Cmd+V the Phase 1 block -> Save -> Show responsive dashboard layout & tabs in Chrome.
+// • PHASE 2: Cmd+A, Cmd+V the Phase 2 block -> Save -> Click Environmental / Social / Governance tabs in Chrome.
+// • PHASE 3: Cmd+A, Cmd+V the Phase 3 block -> Save -> Show Framer Motion animated progress bars & Chrome DevTools check.
+// ====================================================================================================
+
+
+// ====================================================================================================
+// STARTING POINT (ORIGINAL STATIC STATE BEFORE TASK STARTS)
+// If you ever need to reset EsgDashboard.tsx back to its initial static state, paste this block:
+// ====================================================================================================
+
+import { ShieldCheck, Leaf, ArrowRight } from "lucide-react";
+
+export function EsgDashboard() {
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability Statement</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            Environmental, Social & Governance
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Arif Investment adheres to high ethical, environmental, and corporate governance standards across civil engineering, construction, and procurement.
+          </p>
+        </div>
+
+        {/* Static Text Card */}
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 sm:p-12 border border-gray-200 shadow-sm text-center">
+          <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mx-auto mb-6">
+            <Leaf size={32} />
+          </div>
+
+          <h3 className="text-2xl font-bold text-brand-dark mb-3">
+            Corporate Sustainability Commitment
+          </h3>
+          <p className="text-sm text-brand-dark/70 max-w-2xl mx-auto mb-8 leading-relaxed">
+            Our projects incorporate community skill acquisition centers, environmental impact assessments, and strict adherence to Nigerian CAMA 1990 regulations. Standard static reporting is conducted through annual offline paper filings.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="p-4 rounded-2xl bg-brand-gray/50 border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Environmental</p>
+              <p className="text-sm font-semibold text-brand-dark mt-1">Solar Camp Grids</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-brand-gray/50 border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Social</p>
+              <p className="text-sm font-semibold text-brand-dark mt-1">Community Boreholes</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-brand-gray/50 border border-gray-200">
+              <p className="text-xs font-bold text-brand-dark/50 uppercase">Governance</p>
+              <p className="text-sm font-semibold text-brand-dark mt-1">CAMA & COREN Rated</p>
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-2 text-xs text-brand-dark/60 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 mb-8">
+            <ShieldCheck size={14} className="text-brand-primary" />
+            <span>Static overview. Interactive category filtering and dynamic metric visualizations unavailable.</span>
+          </div>
+
+          <div>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-brand-primary text-brand-accent font-bold text-sm shadow-md hover:bg-brand-secondary transition-all"
+            >
+              <span>Request Sustainability Audit</span>
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 1: DASHBOARD UI LAYOUT, STRUCTURED DATA & CATEGORY NAVIGATION TABS
+// (In EsgDashboard.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import {
+  Leaf,
+  Users,
+  Building,
+  ShieldCheck,
+  Award,
+  Sparkles,
+  ArrowRight,
+  TrendingUp,
+  Droplets,
+  Zap,
+  CheckCircle2,
+} from "lucide-react";
+
+export function EsgDashboard() {
+  // Phase 1: Static category for layout presentation
+  const activeTab = "environmental";
+
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability & ESG Accountability</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            ESG Impact & Accountability Dashboard
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Transparent tracking of environmental performance, host community development initiatives, and ethical governance across all Arif Investment projects.
+          </p>
+
+          {/* Category Navigation Tabs */}
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white border border-gray-200 shadow-sm max-w-full overflow-x-auto">
+            <button
+              type="button"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeTab === "environmental"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:bg-gray-50"
+              }`}
+            >
+              <Leaf size={16} />
+              <span>Environmental</span>
+            </button>
+
+            <button
+              type="button"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeTab === "social"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:bg-gray-50"
+              }`}
+            >
+              <Users size={16} />
+              <span>Social Impact</span>
+            </button>
+
+            <button
+              type="button"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeTab === "governance"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:bg-gray-50"
+              }`}
+            >
+              <Building size={16} />
+              <span>Governance</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Dashboard Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Column: Metric Cards */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+                  Strategic Objective
+                </span>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary">
+                  <Sparkles size={11} />
+                  Verified Q3 2026 Audit
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2">
+                Environmental Stewardship
+              </h3>
+              <p className="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">
+                Pioneering eco-friendly construction techniques, solar-powered field staging, and circular concrete reclamation across all Niger Delta and federal infrastructure sites.
+              </p>
+            </div>
+
+            {/* Metrics List */}
+            <div className="space-y-4">
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                      <Zap size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-brand-dark">Annual Carbon Abatement</h4>
+                      <p className="text-xs text-brand-dark/60 mt-0.5">Direct emission reductions achieved through Tier 4 heavy equipment fleets.</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-base sm:text-lg font-black text-brand-dark">14,250 MT</span>
+                    <p className="text-[11px] font-semibold text-brand-dark/50">Target: 18,000 MT</p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                    <span className="text-brand-dark/60">Milestone Progress</span>
+                    <span className="text-brand-primary">79% Achieved</span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-brand-primary rounded-full w-[79%]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                      <Leaf size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-brand-dark">Renewable Energy on Construction Sites</h4>
+                      <p className="text-xs text-brand-dark/60 mt-0.5">Mobile photovoltaic hybrid micro-grids replacing diesel generation.</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-base sm:text-lg font-black text-brand-dark">68%</span>
+                    <p className="text-[11px] font-semibold text-brand-dark/50">Target: 85%</p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                    <span className="text-brand-dark/60">Milestone Progress</span>
+                    <span className="text-brand-primary">80% Achieved</span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-brand-primary rounded-full w-[80%]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                      <TrendingUp size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-brand-dark">Circular & Recycled Aggregates</h4>
+                      <p className="text-xs text-brand-dark/60 mt-0.5">Reclaimed asphalt pavement (RAP) in structural base courses.</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-base sm:text-lg font-black text-brand-dark">42%</span>
+                    <p className="text-[11px] font-semibold text-brand-dark/50">Target: 50%</p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                    <span className="text-brand-dark/60">Milestone Progress</span>
+                    <span className="text-brand-primary">84% Achieved</span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-brand-primary rounded-full w-[84%]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                      <Droplets size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-brand-dark">Ecological Dredging & Water Preservation</h4>
+                      <p className="text-xs text-brand-dark/60 mt-0.5">Sediment containment and water filtration safeguarding coastal waterways.</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-base sm:text-lg font-black text-brand-dark">1.2M Liters</span>
+                    <p className="text-[11px] font-semibold text-brand-dark/50">Target: 1.5M Liters</p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                    <span className="text-brand-dark/60">Milestone Progress</span>
+                    <span className="text-brand-primary">80% Achieved</span>
+                  </div>
+                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-brand-primary rounded-full w-[80%]" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: High-Impact Summary Card */}
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                  <Award size={13} />
+                  <span>Impact Overview</span>
+                </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                  UN SDG Aligned
+                </span>
+              </div>
+
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                Accountability Metrics
+              </h3>
+              <p className="text-xs sm:text-sm text-white/70 leading-relaxed mb-8">
+                Eco-resilient civil engineering, sustainable materials & low-carbon site execution
+              </p>
+
+              <div className="space-y-3 mb-8">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                  <span className="text-xs text-white/70 font-medium">Net Carbon Offset</span>
+                  <span className="text-lg sm:text-xl font-extrabold text-brand-accent">14,250 MT</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                  <span className="text-xs text-white/70 font-medium">Solar Site Electrification</span>
+                  <span className="text-lg sm:text-xl font-extrabold text-brand-accent">68%</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                  <span className="text-xs text-white/70 font-medium">Recycled Road Asphalt</span>
+                  <span className="text-lg sm:text-xl font-extrabold text-brand-accent">42%</span>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 pt-6 mb-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-3">
+                  Targeted UN Sustainability Goals:
+                </p>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 text-xs text-white/90 font-semibold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                    <CheckCircle2 size={14} className="text-brand-accent shrink-0" />
+                    <span>SDG 7: Affordable Clean Energy</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-white/90 font-semibold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                    <CheckCircle2 size={14} className="text-brand-accent shrink-0" />
+                    <span>SDG 11: Sustainable Cities</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-white/90 font-semibold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                    <CheckCircle2 size={14} className="text-brand-accent shrink-0" />
+                    <span>SDG 13: Climate Action</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-white/10">
+              <a
+                href="#contact"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg transition-all"
+              >
+                <span>Download Full 2026 ESG Audit Report</span>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 2: CLIENT-SIDE REACT STATE HOOK (USESTATE) FOR INTERACTIVE TABS & DYNAMIC DATA
+// (In EsgDashboard.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import { useState } from "react";
+import {
+  Leaf,
+  Users,
+  Building,
+  ShieldCheck,
+  Award,
+  Sparkles,
+  ArrowRight,
+  TrendingUp,
+  Droplets,
+  Zap,
+  HardHat,
+  HeartHandshake,
+  FileCheck2,
+  CheckCircle2,
+} from "lucide-react";
+
+export type EsgCategory = "environmental" | "social" | "governance";
+
+interface MetricItem {
+  id: string;
+  name: string;
+  value: string;
+  target: string;
+  percentage: number;
+  icon: typeof Leaf;
+  description: string;
+}
+
+interface EsgData {
+  category: EsgCategory;
+  title: string;
+  tagline: string;
+  highlightText: string;
+  kpis: {
+    label: string;
+    value: string;
+  }[];
+  metrics: MetricItem[];
+  sdgGoals: string[];
+}
+
+export const esgData: Record<EsgCategory, EsgData> = {
+  environmental: {
+    category: "environmental",
+    title: "Environmental Stewardship",
+    tagline: "Eco-resilient civil engineering, sustainable materials & low-carbon site execution",
+    highlightText: "Pioneering eco-friendly construction techniques, solar-powered field staging, and circular concrete reclamation across all Niger Delta and federal infrastructure sites.",
+    kpis: [
+      { label: "Net Carbon Offset", value: "14,250 MT" },
+      { label: "Solar Site Electrification", value: "68%" },
+      { label: "Recycled Road Asphalt", value: "42%" },
+    ],
+    sdgGoals: ["SDG 7: Affordable Clean Energy", "SDG 11: Sustainable Cities", "SDG 13: Climate Action"],
+    metrics: [
+      {
+        id: "carbon",
+        name: "Annual Carbon Abatement",
+        value: "14,250 MT",
+        target: "Target: 18,000 MT",
+        percentage: 79,
+        icon: Zap,
+        description: "Direct emission reductions achieved through Tier 4 heavy equipment fleets and solarized site camps.",
+      },
+      {
+        id: "energy",
+        name: "Renewable Energy on Construction Sites",
+        value: "68%",
+        target: "Target: 85%",
+        percentage: 80,
+        icon: Leaf,
+        description: "Mobile photovoltaic hybrid micro-grids replacing diesel generation at all remote project depots.",
+      },
+      {
+        id: "materials",
+        name: "Circular & Recycled Aggregates",
+        value: "42%",
+        target: "Target: 50%",
+        percentage: 84,
+        icon: TrendingUp,
+        description: "Re-engineered reclaimed asphalt pavement (RAP) and recycled slag in structural base courses.",
+      },
+      {
+        id: "water",
+        name: "Ecological Dredging & Water Preservation",
+        value: "1.2M Liters",
+        target: "Target: 1.5M Liters",
+        percentage: 80,
+        icon: Droplets,
+        description: "Sediment containment and water filtration safeguarding coastal waterways and local mangroves.",
+      },
+    ],
+  },
+  social: {
+    category: "social",
+    title: "Social Impact & Community Empowerment",
+    tagline: "Skills acquisition, youth workforce training, and critical community welfare assets",
+    highlightText: "Investing directly in host community stability through COREN-certified technical apprentice programs, clean water boreholes, and healthcare clinic infrastructure.",
+    kpis: [
+      { label: "Local Youths Upskilled", value: "2,840+" },
+      { label: "Clean Boreholes Drilled", value: "86 Units" },
+      { label: "Zero-Incident Safe Hours", value: "1.85M" },
+    ],
+    sdgGoals: ["SDG 4: Quality Education", "SDG 6: Clean Water", "SDG 8: Decent Work & Economic Growth"],
+    metrics: [
+      {
+        id: "youth",
+        name: "Technical Vocational Apprenticeships",
+        value: "2,840 Youths",
+        target: "Target: 3,500 Youths",
+        percentage: 81,
+        icon: Users,
+        description: "Certified training programs in pipeline welding, industrial electrical wiring, and heavy plant mechanics.",
+      },
+      {
+        id: "water-wells",
+        name: "Community Potable Water Facilities",
+        value: "86 Boreholes",
+        target: "Target: 100 Wells",
+        percentage: 86,
+        icon: Droplets,
+        description: "Deep motorized water wells drilled in rural communities adjacent to right-of-way corridor projects.",
+      },
+      {
+        id: "safety",
+        name: "Zero Lost-Time Injury (LTI) Record",
+        value: "1.85M Hours",
+        target: "Target: 2.0M Hours",
+        percentage: 92,
+        icon: HardHat,
+        description: "Rigorous daily HSE tool-box talks and strict adherence to international occupational health codes.",
+      },
+      {
+        id: "local-content",
+        name: "Nigerian Local Content Spend Ratio",
+        value: "74%",
+        target: "Target: 80%",
+        percentage: 92,
+        icon: HeartHandshake,
+        description: "Procurement prioritising domestic sub-contractors, indigenous fabricators, and regional logistics providers.",
+      },
+    ],
+  },
+  governance: {
+    category: "governance",
+    title: "Corporate Governance & Ethical Leadership",
+    tagline: "Rigorous regulatory compliance, 9CE federal rating integrity & zero-tolerance anti-corruption",
+    highlightText: "Operating with absolute transparency under Nigerian CAMA corporate law, COREN professional certifications, and independent third-party project audits.",
+    kpis: [
+      { label: "Statutory Compliance", value: "100%" },
+      { label: "ISO 9001/45001 Score", value: "98.4%" },
+      { label: "PPP Milestones on Time", value: "92%" },
+    ],
+    sdgGoals: ["SDG 9: Industry & Innovation", "SDG 16: Peace, Justice & Strong Institutions", "SDG 17: Partnerships"],
+    metrics: [
+      {
+        id: "compliance",
+        name: "Statutory & Regulatory Audit Compliance",
+        value: "100%",
+        target: "Target: 100%",
+        percentage: 100,
+        icon: ShieldCheck,
+        description: "Unqualified clean audit reports from the Federal Ministry of Works, CAC, and state planning boards.",
+      },
+      {
+        id: "iso",
+        name: "ISO 9001 & 45001 Quality QA/QC Rating",
+        value: "98.4%",
+        target: "Target: 100%",
+        percentage: 98,
+        icon: Award,
+        description: "Standardized quality control checklists ensuring all concrete batching and structural steel meet ASTM norms.",
+      },
+      {
+        id: "milestones",
+        name: "Public-Private Partnership (PPP) Milestones",
+        value: "24 of 26",
+        target: "Target: 26 Delivered",
+        percentage: 92,
+        icon: FileCheck2,
+        description: "Milestones delivered on or ahead of schedule, with transparent digital progress logs accessible to stakeholders.",
+      },
+      {
+        id: "ethics",
+        name: "Anti-Bribery & Code of Conduct Certification",
+        value: "100%",
+        target: "Target: 100%",
+        percentage: 100,
+        icon: CheckCircle2,
+        description: "Mandatory annual ethics and anti-corruption re-certification for 100% of staff, vendors, and site supervisors.",
+      },
+    ],
+  },
+};
+
+export function EsgDashboard() {
+  // Phase 2: State management for active category
+  const [activeTab, setActiveTab] = useState<EsgCategory>("environmental");
+
+  const currentData = esgData[activeTab];
+
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability & ESG Accountability</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            ESG Impact & Accountability Dashboard
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Transparent tracking of environmental performance, host community development initiatives, and ethical governance across all Arif Investment projects.
+          </p>
+
+          {/* Interactive Navigation Tabs */}
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white border border-gray-200 shadow-sm max-w-full overflow-x-auto">
+            <button
+              type="button"
+              onClick={() => setActiveTab("environmental")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "environmental"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Leaf size={16} />
+              <span>Environmental</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("social")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "social"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Users size={16} />
+              <span>Social Impact</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("governance")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "governance"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Building size={16} />
+              <span>Governance</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Dynamic Category Data Display */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+                  Strategic Objective
+                </span>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary">
+                  <Sparkles size={11} />
+                  Verified Q3 2026 Audit
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2">
+                {currentData.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">
+                {currentData.highlightText}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {currentData.metrics.map((metric) => {
+                const Icon = metric.icon;
+                return (
+                  <div
+                    key={metric.id}
+                    className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                          <Icon size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-bold text-brand-dark">
+                            {metric.name}
+                          </h4>
+                          <p className="text-xs text-brand-dark/60 mt-0.5">
+                            {metric.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right shrink-0">
+                        <span className="text-base sm:text-lg font-black text-brand-dark">
+                          {metric.value}
+                        </span>
+                        <p className="text-[11px] font-semibold text-brand-dark/50">
+                          {metric.target}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3">
+                      <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                        <span className="text-brand-dark/60">Milestone Progress</span>
+                        <span className="text-brand-primary">{metric.percentage}% Achieved</span>
+                      </div>
+                      <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          style={{ width: `${metric.percentage}%` }}
+                          className="h-full bg-brand-primary rounded-full relative transition-all duration-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                  <Award size={13} />
+                  <span>Impact Overview</span>
+                </span>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                  UN SDG Aligned
+                </span>
+              </div>
+
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                Accountability Metrics
+              </h3>
+              <p className="text-xs sm:text-sm text-white/70 leading-relaxed mb-8">
+                {currentData.tagline}
+              </p>
+
+              <div className="space-y-3 mb-8">
+                {currentData.kpis.map((kpi, kIdx) => (
+                  <div
+                    key={kIdx}
+                    className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between"
+                  >
+                    <span className="text-xs text-white/70 font-medium">{kpi.label}</span>
+                    <span className="text-lg sm:text-xl font-extrabold text-brand-accent">
+                      {kpi.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t border-white/10 pt-6 mb-6">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-3">
+                  Targeted UN Sustainability Goals:
+                </p>
+                <div className="flex flex-col gap-2">
+                  {currentData.sdgGoals.map((goal, gIdx) => (
+                    <div
+                      key={gIdx}
+                      className="flex items-center gap-2 text-xs text-white/90 font-semibold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"
+                    >
+                      <CheckCircle2 size={14} className="text-brand-accent shrink-0" />
+                      <span>{goal}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-white/10">
+              <a
+                href="#contact"
+                className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg transition-all"
+              >
+                <span>Download Full 2026 ESG Audit Report</span>
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// PHASE 3: FRAMER MOTION ANIMATED IMPACT CHARTS & TRANSITIONS
+// (In EsgDashboard.tsx: Press Cmd+A, then paste this entire block, save, and check Chrome)
+// ====================================================================================================
+
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Leaf,
+  Users,
+  Building,
+  ShieldCheck,
+  Award,
+  Sparkles,
+  ArrowRight,
+  TrendingUp,
+  Droplets,
+  Zap,
+  HardHat,
+  HeartHandshake,
+  FileCheck2,
+  CheckCircle2,
+} from "lucide-react";
+
+export type EsgCategory = "environmental" | "social" | "governance";
+
+interface MetricItem {
+  id: string;
+  name: string;
+  value: string;
+  target: string;
+  percentage: number;
+  icon: typeof Leaf;
+  description: string;
+}
+
+interface EsgData {
+  category: EsgCategory;
+  title: string;
+  tagline: string;
+  highlightText: string;
+  kpis: {
+    label: string;
+    value: string;
+  }[];
+  metrics: MetricItem[];
+  sdgGoals: string[];
+}
+
+export const esgData: Record<EsgCategory, EsgData> = {
+  environmental: {
+    category: "environmental",
+    title: "Environmental Stewardship",
+    tagline: "Eco-resilient civil engineering, sustainable materials & low-carbon site execution",
+    highlightText: "Pioneering eco-friendly construction techniques, solar-powered field staging, and circular concrete reclamation across all Niger Delta and federal infrastructure sites.",
+    kpis: [
+      { label: "Net Carbon Offset", value: "14,250 MT" },
+      { label: "Solar Site Electrification", value: "68%" },
+      { label: "Recycled Road Asphalt", value: "42%" },
+    ],
+    sdgGoals: ["SDG 7: Affordable Clean Energy", "SDG 11: Sustainable Cities", "SDG 13: Climate Action"],
+    metrics: [
+      {
+        id: "carbon",
+        name: "Annual Carbon Abatement",
+        value: "14,250 MT",
+        target: "Target: 18,000 MT",
+        percentage: 79,
+        icon: Zap,
+        description: "Direct emission reductions achieved through Tier 4 heavy equipment fleets and solarized site camps.",
+      },
+      {
+        id: "energy",
+        name: "Renewable Energy on Construction Sites",
+        value: "68%",
+        target: "Target: 85%",
+        percentage: 80,
+        icon: Leaf,
+        description: "Mobile photovoltaic hybrid micro-grids replacing diesel generation at all remote project depots.",
+      },
+      {
+        id: "materials",
+        name: "Circular & Recycled Aggregates",
+        value: "42%",
+        target: "Target: 50%",
+        percentage: 84,
+        icon: TrendingUp,
+        description: "Re-engineered reclaimed asphalt pavement (RAP) and recycled slag in structural base courses.",
+      },
+      {
+        id: "water",
+        name: "Ecological Dredging & Water Preservation",
+        value: "1.2M Liters",
+        target: "Target: 1.5M Liters",
+        percentage: 80,
+        icon: Droplets,
+        description: "Sediment containment and water filtration safeguarding coastal waterways and local mangroves.",
+      },
+    ],
+  },
+  social: {
+    category: "social",
+    title: "Social Impact & Community Empowerment",
+    tagline: "Skills acquisition, youth workforce training, and critical community welfare assets",
+    highlightText: "Investing directly in host community stability through COREN-certified technical apprentice programs, clean water boreholes, and healthcare clinic infrastructure.",
+    kpis: [
+      { label: "Local Youths Upskilled", value: "2,840+" },
+      { label: "Clean Boreholes Drilled", value: "86 Units" },
+      { label: "Zero-Incident Safe Hours", value: "1.85M" },
+    ],
+    sdgGoals: ["SDG 4: Quality Education", "SDG 6: Clean Water", "SDG 8: Decent Work & Economic Growth"],
+    metrics: [
+      {
+        id: "youth",
+        name: "Technical Vocational Apprenticeships",
+        value: "2,840 Youths",
+        target: "Target: 3,500 Youths",
+        percentage: 81,
+        icon: Users,
+        description: "Certified training programs in pipeline welding, industrial electrical wiring, and heavy plant mechanics.",
+      },
+      {
+        id: "water-wells",
+        name: "Community Potable Water Facilities",
+        value: "86 Boreholes",
+        target: "Target: 100 Wells",
+        percentage: 86,
+        icon: Droplets,
+        description: "Deep motorized water wells drilled in rural communities adjacent to right-of-way corridor projects.",
+      },
+      {
+        id: "safety",
+        name: "Zero Lost-Time Injury (LTI) Record",
+        value: "1.85M Hours",
+        target: "Target: 2.0M Hours",
+        percentage: 92,
+        icon: HardHat,
+        description: "Rigorous daily HSE tool-box talks and strict adherence to international occupational health codes.",
+      },
+      {
+        id: "local-content",
+        name: "Nigerian Local Content Spend Ratio",
+        value: "74%",
+        target: "Target: 80%",
+        percentage: 92,
+        icon: HeartHandshake,
+        description: "Procurement prioritising domestic sub-contractors, indigenous fabricators, and regional logistics providers.",
+      },
+    ],
+  },
+  governance: {
+    category: "governance",
+    title: "Corporate Governance & Ethical Leadership",
+    tagline: "Rigorous regulatory compliance, 9CE federal rating integrity & zero-tolerance anti-corruption",
+    highlightText: "Operating with absolute transparency under Nigerian CAMA corporate law, COREN professional certifications, and independent third-party project audits.",
+    kpis: [
+      { label: "Statutory Compliance", value: "100%" },
+      { label: "ISO 9001/45001 Score", value: "98.4%" },
+      { label: "PPP Milestones on Time", value: "92%" },
+    ],
+    sdgGoals: ["SDG 9: Industry & Innovation", "SDG 16: Peace, Justice & Strong Institutions", "SDG 17: Partnerships"],
+    metrics: [
+      {
+        id: "compliance",
+        name: "Statutory & Regulatory Audit Compliance",
+        value: "100%",
+        target: "Target: 100%",
+        percentage: 100,
+        icon: ShieldCheck,
+        description: "Unqualified clean audit reports from the Federal Ministry of Works, CAC, and state planning boards.",
+      },
+      {
+        id: "iso",
+        name: "ISO 9001 & 45001 Quality QA/QC Rating",
+        value: "98.4%",
+        target: "Target: 100%",
+        percentage: 98,
+        icon: Award,
+        description: "Standardized quality control checklists ensuring all concrete batching and structural steel meet ASTM norms.",
+      },
+      {
+        id: "milestones",
+        name: "Public-Private Partnership (PPP) Milestones",
+        value: "24 of 26",
+        target: "Target: 26 Delivered",
+        percentage: 92,
+        icon: FileCheck2,
+        description: "Milestones delivered on or ahead of schedule, with transparent digital progress logs accessible to stakeholders.",
+      },
+      {
+        id: "ethics",
+        name: "Anti-Bribery & Code of Conduct Certification",
+        value: "100%",
+        target: "Target: 100%",
+        percentage: 100,
+        icon: CheckCircle2,
+        description: "Mandatory annual ethics and anti-corruption re-certification for 100% of staff, vendors, and site supervisors.",
+      },
+    ],
+  },
+};
+
+export function EsgDashboard() {
+  const [activeTab, setActiveTab] = useState<EsgCategory>("environmental");
+
+  const currentData = esgData[activeTab];
+
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability & ESG Accountability</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            ESG Impact & Accountability Dashboard
+          </h2>
+          <div className="w-16 h-1 bg-brand-accent mx-auto mt-4 rounded-full" />
+          <p className="mt-4 text-base sm:text-lg text-brand-dark/70 font-normal leading-relaxed">
+            Transparent tracking of environmental performance, host community development initiatives, and ethical governance across all Arif Investment projects.
+          </p>
+
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white border border-gray-200 shadow-sm max-w-full overflow-x-auto">
+            <button
+              type="button"
+              onClick={() => setActiveTab("environmental")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "environmental"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Leaf size={16} />
+              <span>Environmental</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("social")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "social"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Users size={16} />
+              <span>Social Impact</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("governance")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                activeTab === "governance"
+                  ? "bg-brand-primary text-brand-accent shadow-sm"
+                  : "text-brand-dark/70 hover:text-brand-primary hover:bg-gray-50"
+              }`}
+            >
+              <Building size={16} />
+              <span>Governance</span>
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
+          >
+            <div className="lg:col-span-7 space-y-4">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+                    Strategic Objective
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary">
+                    <Sparkles size={11} />
+                    Verified Q3 2026 Audit
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2">
+                  {currentData.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">
+                  {currentData.highlightText}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {currentData.metrics.map((metric, idx) => {
+                  const Icon = metric.icon;
+                  return (
+                    <div
+                      key={metric.id}
+                      className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs hover:shadow-sm transition-all"
+                    >
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                            <Icon size={20} />
+                          </div>
+                          <div>
+                            <h4 className="text-sm sm:text-base font-bold text-brand-dark">
+                              {metric.name}
+                            </h4>
+                            <p className="text-xs text-brand-dark/60 mt-0.5">
+                              {metric.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="text-right shrink-0">
+                          <span className="text-base sm:text-lg font-black text-brand-dark">
+                            {metric.value}
+                          </span>
+                          <p className="text-[11px] font-semibold text-brand-dark/50">
+                            {metric.target}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Animated Progress Bar */}
+                      <div className="mt-3">
+                        <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
+                          <span className="text-brand-dark/60">Milestone Progress</span>
+                          <span className="text-brand-primary">{metric.percentage}% Achieved</span>
+                        </div>
+                        <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${metric.percentage}%` }}
+                            transition={{ duration: 0.7, delay: idx * 0.1, ease: "easeOut" }}
+                            className="h-full bg-brand-primary rounded-full relative"
+                          >
+                            <div className="absolute top-0 right-0 bottom-0 w-2 bg-brand-accent rounded-full" />
+                          </motion.div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none" />
+
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-primary text-brand-accent border border-brand-accent/20">
+                    <Award size={13} />
+                    <span>Impact Overview</span>
+                  </span>
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-white/10 text-brand-accent">
+                    UN SDG Aligned
+                  </span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                  Accountability Metrics
+                </h3>
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed mb-8">
+                  {currentData.tagline}
+                </p>
+
+                <div className="space-y-3 mb-8">
+                  {currentData.kpis.map((kpi, kIdx) => (
+                    <div
+                      key={kIdx}
+                      className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between"
+                    >
+                      <span className="text-xs text-white/70 font-medium">{kpi.label}</span>
+                      <span className="text-lg sm:text-xl font-extrabold text-brand-accent">
+                        {kpi.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t border-white/10 pt-6 mb-6">
+                  <p className="text-xs font-bold uppercase tracking-wider text-white/60 mb-3">
+                    Targeted UN Sustainability Goals:
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    {currentData.sdgGoals.map((goal, gIdx) => (
+                      <div
+                        key={gIdx}
+                        className="flex items-center gap-2 text-xs text-white/90 font-semibold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"
+                      >
+                        <CheckCircle2 size={14} className="text-brand-accent shrink-0" />
+                        <span>{goal}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-white/10">
+                <a
+                  href="#contact"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-brand-accent hover:bg-brand-accent/90 text-brand-dark font-black text-sm tracking-wide shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+                >
+                  <span>Download Full 2026 ESG Audit Report</span>
+                  <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
+
+
+// ====================================================================================================
+// SPOKEN EPILOGUE SCRIPT FOR RECORDING (Read out loud at the end of Phase 3):
+// ====================================================================================================
+// "To conclude our fifth task, we have transformed our static sustainability section into a fully
+//  interactive ESG Impact and Accountability Dashboard for Arif Investment Nigeria. In Phase 1, we established
+//  a responsive dual-column dashboard layout with category navigation tabs and UN SDG alignment badges.
+//  In Phase 2, we wired up client-side React state using useState to seamlessly switch live metrics across
+//  Environmental, Social, and Governance categories. Finally, in Phase 3, we integrated Framer Motion to provide
+//  smooth, animated horizontal progress bars and verified responsiveness across desktop, tablet, and mobile
+//  viewports using Google Chrome DevTools."
+// ====================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =======================================================================
+// BLOCK 1: ESG DATA DICTIONARY (Copy and paste above the component)
+// =======================================================================
+import { Leaf, Users, Building, ShieldCheck, Award, Sparkles, ArrowRight, TrendingUp, Droplets, Zap, HardHat, HeartHandshake, FileCheck2, CheckCircle2 } from "lucide-react";
+
+export type EsgCategory = "environmental" | "social" | "governance";
+
+export const esgData: Record<EsgCategory, any> = {
+  environmental: {
+    category: "environmental",
+    title: "Environmental Stewardship",
+    tagline: "Eco-resilient civil engineering, sustainable materials & low-carbon site execution",
+    highlightText: "Pioneering eco-friendly construction techniques, solar-powered field staging, and circular concrete reclamation across all Niger Delta and federal infrastructure sites.",
+    kpis: [
+      { label: "Net Carbon Offset", value: "14,250 MT" },
+      { label: "Solar Site Electrification", value: "68%" },
+      { label: "Recycled Road Asphalt", value: "42%" },
+    ],
+    sdgGoals: ["SDG 7: Affordable Clean Energy", "SDG 11: Sustainable Cities", "SDG 13: Climate Action"],
+    metrics: [
+      { id: "carbon", name: "Annual Carbon Abatement", value: "14,250 MT", target: "Target: 18,000 MT", percentage: 79, icon: Zap, description: "Direct emission reductions achieved through Tier 4 heavy equipment fleets." },
+      { id: "energy", name: "Renewable Energy on Sites", value: "68%", target: "Target: 85%", percentage: 80, icon: Leaf, description: "Mobile photovoltaic hybrid micro-grids replacing diesel generation." },
+      { id: "materials", name: "Circular & Recycled Aggregates", value: "42%", target: "Target: 50%", percentage: 84, icon: TrendingUp, description: "Re-engineered reclaimed asphalt pavement (RAP) in structural courses." },
+      { id: "water", name: "Ecological Dredging", value: "1.2M Liters", target: "Target: 1.5M Liters", percentage: 80, icon: Droplets, description: "Sediment containment and water filtration safeguarding coastal waterways." },
+    ],
+  },
+  social: {
+    category: "social",
+    title: "Social Impact & Community Empowerment",
+    tagline: "Skills acquisition, youth workforce training, and critical community welfare assets",
+    highlightText: "Investing directly in host community stability through COREN-certified technical apprentice programs and healthcare infrastructure.",
+    kpis: [
+      { label: "Local Youths Upskilled", value: "2,840+" },
+      { label: "Clean Boreholes Drilled", value: "86 Units" },
+      { label: "Zero-Incident Safe Hours", value: "1.85M" },
+    ],
+    sdgGoals: ["SDG 4: Quality Education", "SDG 6: Clean Water", "SDG 8: Decent Work"],
+    metrics: [
+      { id: "youth", name: "Vocational Apprenticeships", value: "2,840 Youths", target: "Target: 3,500 Youths", percentage: 81, icon: Users, description: "Certified training programs in pipeline welding and electrical wiring." },
+      { id: "water-wells", name: "Community Water Facilities", value: "86 Boreholes", target: "Target: 100 Wells", percentage: 86, icon: Droplets, description: "Deep motorized water wells drilled in rural communities." },
+      { id: "safety", name: "Zero LTI Record", value: "1.85M Hours", target: "Target: 2.0M Hours", percentage: 92, icon: HardHat, description: "Rigorous daily HSE tool-box talks and strict adherence to codes." },
+      { id: "local-content", name: "Local Content Spend", value: "74%", target: "Target: 80%", percentage: 92, icon: HeartHandshake, description: "Procurement prioritising domestic sub-contractors and logistics." },
+    ],
+  },
+  governance: {
+    category: "governance",
+    title: "Corporate Governance & Ethical Leadership",
+    tagline: "Rigorous regulatory compliance, federal rating integrity & zero-tolerance anti-corruption",
+    highlightText: "Operating with absolute transparency under Nigerian CAMA corporate law and COREN professional certifications.",
+    kpis: [
+      { label: "Statutory Compliance", value: "100%" },
+      { label: "ISO 9001/45001 Score", value: "98.4%" },
+      { label: "PPP Milestones on Time", value: "92%" },
+    ],
+    sdgGoals: ["SDG 9: Industry & Innovation", "SDG 16: Strong Institutions", "SDG 17: Partnerships"],
+    metrics: [
+      { id: "compliance", name: "Statutory Audit Compliance", value: "100%", target: "Target: 100%", percentage: 100, icon: ShieldCheck, description: "Unqualified clean audit reports from the Federal Ministry of Works." },
+      { id: "iso", name: "ISO QA/QC Rating", value: "98.4%", target: "Target: 100%", percentage: 98, icon: Award, description: "Standardized quality control checklists ensuring ASTM norms." },
+      { id: "milestones", name: "PPP Milestones", value: "24 of 26", target: "Target: 26 Delivered", percentage: 92, icon: FileCheck2, description: "Milestones delivered on or ahead of schedule with digital logs." },
+      { id: "ethics", name: "Anti-Bribery Certification", value: "100%", target: "Target: 100%", percentage: 100, icon: CheckCircle2, description: "Mandatory annual ethics and anti-corruption re-certification." },
+    ],
+  },
+};
+
+
+// =======================================================================
+// BLOCK 2: DYNAMIC JSX UI (Copy and paste over the old static return block)
+// =======================================================================
+  return (
+    <section id="esg" className="scroll-mt-24 pt-24 pb-28 bg-brand-gray/40 relative overflow-hidden border-t border-gray-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <ShieldCheck size={14} />
+            <span>Sustainability & ESG Accountability</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark tracking-tight leading-tight">
+            ESG Impact & Accountability Dashboard
+          </h2>
+
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white border border-gray-200 shadow-sm max-w-full overflow-x-auto">
+            <button className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "environmental" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Leaf size={16} /> <span>Environmental</span>
+            </button>
+            <button className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "social" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Users size={16} /> <span>Social Impact</span>
+            </button>
+            <button className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === "governance" ? "bg-brand-primary text-brand-accent shadow-sm" : "text-brand-dark/70 hover:bg-gray-50"}`}>
+              <Building size={16} /> <span>Governance</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          <div className="lg:col-span-7 space-y-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2">{currentData.title}</h3>
+              <p className="text-xs sm:text-sm text-brand-dark/70 leading-relaxed">{currentData.highlightText}</p>
+            </div>
+
+            <div className="space-y-4">
+              {currentData.metrics.map((metric: any, idx: number) => {
+                const Icon = metric.icon;
+                return (
+                  <div key={metric.id} className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-2xs">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                          <Icon size={20} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-bold text-brand-dark">{metric.name}</h4>
+                          <p className="text-xs text-brand-dark/60 mt-0.5">{metric.description}</p>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-base sm:text-lg font-black text-brand-dark">{metric.value}</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                      {/* PROGRESS BAR DIV TO ANIMATE LATER */}
+                      <div className="h-full bg-brand-primary rounded-full relative" style={{ width: `${metric.percentage}%` }}>
+                         <div className="absolute top-0 right-0 bottom-0 w-2 bg-brand-accent rounded-full" />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 bg-brand-secondary text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-brand-primary/30 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">Accountability Metrics</h3>
+              <div className="space-y-3 mt-8">
+                {currentData.kpis.map((kpi: any, kIdx: number) => (
+                  <div key={kIdx} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+                    <span className="text-xs text-white/70 font-medium">{kpi.label}</span>
+                    <span className="text-lg sm:text-xl font-extrabold text-brand-accent">{kpi.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
